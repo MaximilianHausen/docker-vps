@@ -30,7 +30,7 @@ services:
       - etherpad_db
     environment:
       TRUST_PROXY: true
-      ADMIN_PASSWORD: CHANGEME_1 # Password for the "admin"-Nutzer here
+      ADMIN_PASSWORD: CHANGEME_1 # Password for the "admin"-user here
       DB_TYPE: postgres
       DB_HOST: etherpad_db
       DB_PORT: 5432
