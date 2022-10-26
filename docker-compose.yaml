@@ -1,0 +1,84 @@
+version: '3.9'
+
+# Port mappings:
+# 11000: Nextcloud
+# 8080: Nextcloud AIO Admin-Panel
+# 8081: Reposilite
+# 8082: Etherpad
+
+services:
+  nextcloud_aio_mastercontainer:
+    image: nextcloud/all-in-one:latest #-arm64
+    restart: always
+    container_name: "nextcloud-aio-mastercontainer"
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=127.0.0.1
+      # - NEXTCLOUD_UPLOAD_LIMIT=10G
+      # - NEXTCLOUD_MAX_TIME=3600
+
+  etherpad:
+    image: etherpad/etherpad:latest
+    restart: always
+    container_name: "etherpad"
+    ports:
+      - "8082:9001"
+    depends_on:
+      - etherpad_db
+    environment:
+      TRUST_PROXY: true
+      ADMIN_PASSWORD: CHANGEME_1 # Passwort für den "admin"-Nutzer hier
+      DB_TYPE: postgres
+      DB_HOST: etherpad_db
+      DB_PORT: 5432
+      DB_NAME: etherpad
+      DB_USER: postgres
+      DB_PASS: CHANGEME_2 # Etherpad DB Passwort hier
+
+  etherpad_db:
+    image: postgres:latest
+    restart: always
+    container_name: "etherpad_db"
+    environment:
+      POSTGRES_DB: etherpad
+      POSTGRES_PASSWORD: CHANGEME_2 # Etherpad DB Passwort hier
+    volumes:
+      - etherpad_db:/var/lib/postgresql/data
+
+# Needs custom setup: https://reposilite.com/guide/docker#using-docker-compose
+  reposilite:
+    image: dzikoysk/reposilite:3.1.0
+    restart: always
+    container_name: "reposilite"
+    volumes:
+      - reposilite_data:/app/data
+    ports:
+      - "8081:8080"
+    environment:
+      - JAVA_OPTS=-Xmx128M
+      - REPOSILITE_OPTS=--token temp:CHANGEME_3 # TEMPORARY SETUP-SECRET HERE
+
+  caddy:
+    image: caddy:latest
+    restart: always
+    container_name: "caddy"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_config:/config
+      - caddy_data:/data
+    network_mode: host
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: "nextcloud_aio_mastercontainer"
+  reposilite_data:
+    name: "reposilite_data"
+  etherpad_db:
+    name: "etherpad_db"
+  caddy_data:
+    name: "caddy_data"
+  caddy_config:
+    name: "caddy_config"
