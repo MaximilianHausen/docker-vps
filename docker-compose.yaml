@@ -30,13 +30,13 @@ services:
       - etherpad_db
     environment:
       TRUST_PROXY: true
-      ADMIN_PASSWORD: CHANGEME_1 # Passwort für den "admin"-Nutzer hier
+      ADMIN_PASSWORD: CHANGEME_1 # Password for the "admin"-Nutzer here
       DB_TYPE: postgres
       DB_HOST: etherpad_db
       DB_PORT: 5432
       DB_NAME: etherpad
       DB_USER: postgres
-      DB_PASS: CHANGEME_2 # Etherpad DB Passwort hier
+      DB_PASS: CHANGEME_2 # Etherpad DB password here
 
   etherpad_db:
     image: postgres:latest
@@ -44,7 +44,7 @@ services:
     container_name: "etherpad_db"
     environment:
       POSTGRES_DB: etherpad
-      POSTGRES_PASSWORD: CHANGEME_2 # Etherpad DB Passwort hier
+      POSTGRES_PASSWORD: CHANGEME_2 # Etherpad DB password here
     volumes:
       - etherpad_db:/var/lib/postgresql/data
 
@@ -59,7 +59,7 @@ services:
       - "8081:8080"
     environment:
       - JAVA_OPTS=-Xmx128M
-      - REPOSILITE_OPTS=--token temp:CHANGEME_3 # TEMPORARY SETUP-SECRET HERE
+      - REPOSILITE_OPTS=--token temp:CHANGEME_3 # Temporary setup-secret here
 
   caddy:
     image: caddy:latest
