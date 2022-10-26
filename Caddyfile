@@ -1,5 +1,5 @@
 # Nextcloud AIO Mastercontainer
-admin.cloud.totodev.de:443 {
+<nextcloud-aio-domain>:443 {
     reverse_proxy localhost:8080 {
         transport http {
             tls_insecure_skip_verify
@@ -8,16 +8,16 @@ admin.cloud.totodev.de:443 {
 }
 
 # Nextcloud
-cloud.totodev.de:443 {
+<nextcloud-domain>:443 {
     reverse_proxy localhost:11000
 }
 
-# Reposilite
-maven.totodev.de:443 {
-    reverse_proxy localhost:8081
+# Etherpad
+<etherpad-domain>:443 {
+    reverse_proxy localhost:8082
 }
 
-# Etherpad
-pad.totodev.de:443 {
-    reverse_proxy localhost:8082
+# Reposilite
+<reposilite-domain>:443 {
+    reverse_proxy localhost:8081
 }
