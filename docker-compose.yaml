@@ -26,7 +26,7 @@ services:
 
   # ==================== Etherpad ====================
   etherpad:
-    image: etherpad/etherpad:latest # Use etherpad:develop on arm64
+    image: etherpad/etherpad:latest # Use nicholaswilde/etherpad:latest on arm64
     restart: always
     container_name: "etherpad"
     ports:
