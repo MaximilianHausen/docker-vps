@@ -1,0 +1,25 @@
+version: '3.9'
+
+# Port mappings:
+# 11000: Nextcloud
+# 8080: Nextcloud AIO Admin-Panel
+# 8081: Etherpad
+# 8082: Kutt
+# 8083: Reposilite
+
+services:
+  caddy:
+    image: caddy:latest
+    restart: always
+    container_name: "caddy"
+    volumes:
+      - ./:/etc/caddy # Container needs access to all Caddyfiles
+      - caddy_config:/config
+      - caddy_data:/data
+    network_mode: host
+
+volumes:
+  caddy_data:
+    name: "caddy_data"
+  caddy_config:
+    name: "caddy_config"

@@ -1,0 +1,23 @@
+version: '3.9'
+
+# Used ports: (11000: HTTP), (8080: AIO HTTPS)
+
+services:
+  nextcloud_aio_mastercontainer:
+    image: nextcloud/all-in-one:latest #-arm64
+    restart: always
+    container_name: "nextcloud-aio-mastercontainer"
+    ports:
+      - "8080:8080"
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=127.0.0.1
+      # - NEXTCLOUD_UPLOAD_LIMIT=10G
+      # - NEXTCLOUD_MAX_TIME=3600
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: "nextcloud_aio_mastercontainer"

@@ -1,0 +1,21 @@
+version: '3.9'
+
+# Used ports: (8083: HTTP)
+
+services:
+  # Needs custom setup: https://reposilite.com/guide/docker#using-docker-compose
+  reposilite:
+    image: dzikoysk/reposilite:3.1.0
+    restart: always
+    container_name: "reposilite"
+    volumes:
+      - reposilite_data:/app/data
+    ports:
+      - "8083:8080"
+    environment:
+      - JAVA_OPTS=-Xmx128M
+      - REPOSILITE_OPTS=--token temp:CHANGEME_REPO_TOKEN # Password for the "temp" setup-user here
+
+volumes:
+  reposilite_data:
+    name: "reposilite_data"
