@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+    proxy:
+        image: jc21/nginx-proxy-manager:latest
+        container_name: 'proxy'
+        restart: always
+        depends_on:
+            - proxy_db
+        network_mode: host
+        volumes:
+            - proxy_data:/data
+            - proxy_certs:/etc/letsencrypt
+        environment:
+            DB_MYSQL_HOST: localhost
+            DB_MYSQL_PORT: 3306
+            DB_MYSQL_USER: 'proxy'
+            DB_MYSQL_PASSWORD: 'proxy'
+            DB_MYSQL_NAME: 'proxy'
+
+    proxy_db:
+        image: mariadb:latest
+        container_name: 'proxy_db'
+        restart: always
+        ports:
+            - 3306:3306
+        volumes:
+            - proxy_db:/var/lib/mysql
+        environment:
+            MYSQL_USER: 'proxy'
+            MYSQL_PASSWORD: 'proxy'
+            MYSQL_DATABASE: 'proxy'
+            MYSQL_ROOT_PASSWORD: 'proxy'
+
+volumes:
+    proxy_data:
+        name: 'proxy_data'
+    proxy_certs:
+        name: 'proxy_certs'
+    proxy_db:
+        name: 'proxy_db'

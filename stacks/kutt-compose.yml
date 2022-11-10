@@ -1,0 +1,72 @@
+version: '3'
+
+# Used ports: (8082: HTTP)
+
+services:
+    kutt:
+        image: kutt/kutt:latest
+        container_name: 'kutt'
+        restart: unless-stopped
+        depends_on:
+            - kutt_redis
+            - kutt_db
+        command: ['./wait-for-it.sh', 'kutt_db:5432', '--', 'npm', 'start']
+        ports:
+            - 8082:3000
+        environment:
+            DEFAULT_DOMAIN: link.example.com # Kutt domain here
+            SITE_NAME: 'Kutt'
+
+            LINK_LENGTH: 6
+            DISALLOW_REGISTRATION: false
+            DISALLOW_ANONYMOUS_LINKS: false
+            USER_LIMIT_PER_DAY: 50
+            NON_USER_COOLDOWN: 0
+            DEFAULT_MAX_STATS_PER_LINK: 5000
+            CUSTOM_DOMAIN_USE_HTTPS: false
+
+            DB_HOST: kutt_db
+            DB_PORT: 5432
+            DB_NAME: 'kutt'
+            DB_USER: 'kutt'
+            DB_PASSWORD: 'kutt'
+            REDIS_HOST: kutt_redis
+            REDIS_PORT: 6379
+
+            # Comma-seperated list of admin accounts
+            ADMIN_EMAILS: 'example@example.com'
+            # Email to send link reports to
+            REPORT_EMAIL: 'example@example.com'
+            # Email to send the account verification emails from
+            MAIL_HOST: 'mail.example.com'
+            MAIL_PORT: 587
+            MAIL_SECURE: true
+            MAIL_USER: 'example@example.com'
+            MAIL_PASSWORD: 'password'
+
+            # A passphrase to encrypt JWT. Use a long and secure key.
+            JWT_SECRET: 'CHANGEME_JWT_SECRET'
+
+    kutt_db:
+        image: postgres:alpine
+        restart: unless-stopped
+        container_name: 'kutt_db'
+        environment:
+            POSTGRES_DB: 'kutt'
+            POSTGRES_USER: 'kutt'
+            POSTGRES_PASSWORD: 'kutt'
+        volumes:
+            - kutt_db:/var/lib/postgresql/data
+
+    kutt_redis:
+        image: redis:alpine
+        restart: unless-stopped
+        container_name: 'kutt_redis'
+        volumes:
+            - kutt_redis:/data
+
+volumes:
+    kutt_redis:
+        name: 'kutt_redis'
+    kutt_db:
+        name: 'kutt_db'

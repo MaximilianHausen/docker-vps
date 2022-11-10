@@ -1,3 +1,0 @@
-<etherpad-domain>:443 {
-    reverse_proxy localhost:8081
-}

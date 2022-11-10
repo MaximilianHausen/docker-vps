@@ -1,0 +1,37 @@
+version: '3'
+
+# Used ports: (8081: HTTP)
+
+services:
+    etherpad:
+        image: etherpad/etherpad:latest # Use nicholaswilde/etherpad:latest on arm64
+        container_name: 'etherpad'
+        restart: unless-stopped
+        depends_on:
+            - etherpad_db
+        ports:
+            - 8081:9001
+        environment:
+            TRUST_PROXY: true
+            ADMIN_PASSWORD: 'CHANGEME' # Password for the "admin"-user here
+            DB_TYPE: postgres
+            DB_HOST: etherpad_db
+            DB_PORT: 5432
+            DB_NAME: 'etherpad'
+            DB_USER: 'etherpad'
+            DB_PASS: 'etherpad'
+
+    etherpad_db:
+        image: postgres:alpine
+        restart: unless-stopped
+        container_name: 'etherpad_db'
+        environment:
+            POSTGRES_DB: 'etherpad'
+            POSTGRES_USER: 'etherpad'
+            POSTGRES_PASSWORD: 'etherpad'
+        volumes:
+            - etherpad_db:/var/lib/postgresql/data
+
+volumes:
+    etherpad_db:
+        name: 'etherpad_db'

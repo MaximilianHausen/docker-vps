@@ -1,25 +1,16 @@
-version: '3.9'
-
-# Port mappings:
-# 11000: Nextcloud
-# 8080: Nextcloud AIO Admin-Panel
-# 8081: Etherpad
-# 8082: Kutt
-# 8083: Reposilite
+version: '3'
 
 services:
-  caddy:
-    image: caddy:latest
-    restart: always
-    container_name: "caddy"
-    volumes:
-      - ./:/etc/caddy # Container needs access to all Caddyfiles
-      - caddy_config:/config
-      - caddy_data:/data
-    network_mode: host
+    portainer:
+        image: portainer/portainer-ce:latest
+        container_name: 'portainer'
+        restart: always
+        ports:
+            - 9000:9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
 
 volumes:
-  caddy_data:
-    name: "caddy_data"
-  caddy_config:
-    name: "caddy_config"
+    portainer_data:
+        name: 'portainer_data'
