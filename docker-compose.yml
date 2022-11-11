@@ -1,5 +1,7 @@
 version: '3'
 
+# Ports: (9000/Exposed: HTTP)
+
 services:
     portainer:
         image: portainer/portainer-ce:latest

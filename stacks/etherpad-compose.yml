@@ -1,6 +1,6 @@
 version: '3'
 
-# Used ports: (8081: HTTP)
+# Ports: (9001/Internal: HTTP)
 
 services:
     etherpad:
@@ -9,8 +9,6 @@ services:
         restart: unless-stopped
         depends_on:
             - etherpad_db
-        ports:
-            - 8081:9001
         environment:
             TRUST_PROXY: true
             ADMIN_PASSWORD: 'CHANGEME' # Password for the "admin"-user here
@@ -23,8 +21,8 @@ services:
 
     etherpad_db:
         image: postgres:alpine
-        restart: unless-stopped
         container_name: 'etherpad_db'
+        restart: unless-stopped
         environment:
             POSTGRES_DB: 'etherpad'
             POSTGRES_USER: 'etherpad'

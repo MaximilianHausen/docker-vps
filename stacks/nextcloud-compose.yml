@@ -1,6 +1,6 @@
 version: '3'
 
-# Used ports: (11000: HTTP), (8080: AIO HTTPS)
+# Ports: (11000/Exposed: HTTP), (8080/Exposed: AIO HTTPS)
 
 services:
     nextcloud_aio_mastercontainer:

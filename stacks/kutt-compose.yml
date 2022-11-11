@@ -1,6 +1,6 @@
 version: '3'
 
-# Used ports: (8082: HTTP)
+# Ports: (3000/Internal: HTTP)
 
 services:
     kutt:
@@ -11,8 +11,6 @@ services:
             - kutt_redis
             - kutt_db
         command: ['./wait-for-it.sh', 'kutt_db:5432', '--', 'npm', 'start']
-        ports:
-            - 8082:3000
         environment:
             DEFAULT_DOMAIN: link.example.com # Kutt domain here
             SITE_NAME: 'Kutt'
@@ -49,8 +47,8 @@ services:
 
     kutt_db:
         image: postgres:alpine
-        restart: unless-stopped
         container_name: 'kutt_db'
+        restart: unless-stopped
         environment:
             POSTGRES_DB: 'kutt'
             POSTGRES_USER: 'kutt'
@@ -60,8 +58,8 @@ services:
 
     kutt_redis:
         image: redis:alpine
-        restart: unless-stopped
         container_name: 'kutt_redis'
+        restart: unless-stopped
         volumes:
             - kutt_redis:/data
 
