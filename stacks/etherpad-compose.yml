@@ -1,6 +1,6 @@
 version: '3'
 
-# Ports: (9001/Internal: HTTP)
+# Ports: (8082/Exposed 9001/Internal: HTTP)
 
 services:
     etherpad:
@@ -9,6 +9,8 @@ services:
         restart: unless-stopped
         depends_on:
             - etherpad_db
+        ports:
+            - 8082:9001
         environment:
             TRUST_PROXY: true
             ADMIN_PASSWORD: 'CHANGEME' # Password for the "admin"-user here

@@ -1,6 +1,6 @@
 version: '3'
 
-# Ports: (8080/Internal: HTTP)
+# Ports: (8081/External 8080/Internal: HTTP)
 
 services:
     # Generate the first account by attaching to the container: https://reposilite.com/guide/tokens#generating-token
@@ -10,6 +10,8 @@ services:
         restart: unless-stopped
         stdin_open: true
         tty: true
+        ports:
+            - 8081:8080
         volumes:
             - reposilite_data:/app/data
         environment:

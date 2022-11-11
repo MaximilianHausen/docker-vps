@@ -1,6 +1,6 @@
 version: '3'
 
-# Ports: (3000/Internal: HTTP)
+# Ports: (8083/Exposed 3000/Internal: HTTP)
 
 services:
     kutt:
@@ -10,6 +10,8 @@ services:
         depends_on:
             - kutt_redis
             - kutt_db
+        ports:
+            - 8083:3000
         command: ['./wait-for-it.sh', 'kutt_db:5432', '--', 'npm', 'start']
         environment:
             DEFAULT_DOMAIN: link.example.com # Kutt domain here
