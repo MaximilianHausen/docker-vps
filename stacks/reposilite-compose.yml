@@ -3,18 +3,19 @@ version: '3'
 # Used ports: (8083: HTTP)
 
 services:
-    # Needs custom setup: https://reposilite.com/guide/docker#using-docker-compose
+    # Generate the first account by attaching to the container: https://reposilite.com/guide/tokens#generating-token
     reposilite:
         image: dzikoysk/reposilite:latest
         container_name: 'reposilite'
         restart: unless-stopped
+        stdin_open: true
+        tty: true
         ports:
             - 8083:8080
         volumes:
             - reposilite_data:/app/data
         environment:
             - JAVA_OPTS=-Xmx128M
-            - REPOSILITE_OPTS=--token temp:temp
 
 volumes:
     reposilite_data:

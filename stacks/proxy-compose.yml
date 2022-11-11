@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+    # Default account: admin@example.com:changeme
     proxy:
         image: jc21/nginx-proxy-manager:latest
         container_name: 'proxy'
